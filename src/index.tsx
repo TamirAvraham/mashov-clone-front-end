@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 const client=new ApolloClient({
-  uri:"http://192.168.5.101:8080/query",
+  uri:"http://localhost:8080/query",
   cache: new InMemoryCache()
 });
 const root = ReactDOM.createRoot(
