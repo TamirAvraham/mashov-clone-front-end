@@ -5,7 +5,7 @@ import { useQuery,gql } from "@apollo/client";
 export interface Student{
     id:number,
     Grades:Grade[],
-    Classes:number[],
+    Classes:Class[],
     DisplaceExceptions:DisplaceException[],
 }
 
