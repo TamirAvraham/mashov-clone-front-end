@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import StudentHomePage from "./student-home-page";
-
+import Login from './login';
 function App() {
   return (
 
@@ -18,7 +18,7 @@ function App() {
         <Link to="/"></Link>
 
         <Routes>
-          <Route  path='/' element={< StudentHomePage />}></Route>
+          <Route  path='/' element={<Login/>}></Route>
         </Routes>
 
       </div>

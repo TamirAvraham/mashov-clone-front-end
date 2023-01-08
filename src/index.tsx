@@ -3,11 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
-const client=new ApolloClient({
-  uri:"http://localhost:8080/query",
-  cache: new InMemoryCache()
-});
+import { ApolloProvider} from "@apollo/client";
+import client from './services/gqlSetup'
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

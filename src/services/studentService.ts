@@ -4,9 +4,13 @@ import { Grade } from "../models/grade";
 import { Student } from "../models/student";
 export namespace StudentService{
     export function GetStudentFromGraphQLJson(jsonFromGraphQl:object)  {
-        console.log('hi');
+        
         type ObjectKey = keyof typeof jsonFromGraphQl;
+
         let getFromJson=(key:string)=>jsonFromGraphQl[key as ObjectKey];
+        
+        
+        
         let data=getFromJson("getStudentById");
 
         let id=parseInt(data['id'] as string);
@@ -85,4 +89,5 @@ export namespace StudentService{
         return ret;
 
     }
+    
 }
