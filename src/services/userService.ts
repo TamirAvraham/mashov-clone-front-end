@@ -34,6 +34,7 @@ export namespace UserService{
         
         return retUser;
     }
+    
     export function ParseUserFromJson(json:any):User {
         let ret:User={
             id:parseInt(json['id']),
@@ -43,7 +44,7 @@ export namespace UserService{
         }
         return ret
     }
-    const errorUser:User={
+    export const errorUser:User={
         id:-666,
         username:"error",
         PointsTo:-666,

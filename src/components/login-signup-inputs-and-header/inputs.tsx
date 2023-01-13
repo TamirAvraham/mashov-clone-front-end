@@ -1,8 +1,10 @@
 import React from 'react'
-import  User  from "../models/user";
+import { Student } from '../../models/student';
+import  User  from "../../models/user";
+//import './styles/inputs.css'
 interface InputsInput{
   text:string;
-  method:(username:string,password:string)=>User;
+  method:(username:string,password:string)=>any;
 };
 const Inputs= ({text,method}:InputsInput)=> {//(username:string,password:string)=>User 
     let password="",username="",error="";

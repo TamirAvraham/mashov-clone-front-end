@@ -2,6 +2,9 @@ import { Class } from "../models/class";
 import { DisplaceException } from "../models/disExept";
 import { Grade } from "../models/grade";
 import { Student } from "../models/student";
+import { UserService } from "./userService";
+import client from "./gqlSetup";
+import { gql } from "@apollo/client";
 export namespace StudentService{
     export function GetStudentFromGraphQLJson(jsonFromGraphQl:object)  {
         
@@ -89,5 +92,92 @@ export namespace StudentService{
         return ret;
 
     }
+    const studentSignUpQuery=gql`
+    mutation createStudent($username:String!,$password:String!){
+        createStudent(input:{
+            user:{
+                username:$username
+                password:$password
+            }
+        }){
+            id
+            grades{
+                id
+                TaskName
+                grade
+                className
+            }
+            classes{
+                id
+                students
+                teacher
+                name
+            }
+            displaceException{
+                id
+                className
+                massage
+            }
+        }
+    }
+    `;
+    const GetStudentByIdQuerey=gql`
+    query getStudentById($id:Int){
+        getStudentById(input: {id:$id}) {
+            id
+            displaceException {
+            id
+            massage
+            className
+            }
+            grades {
+            TaskName
+            grade
+            className
+            }
+            classes {
+            id
+            name
+            students
+            }
+        }
+    }
+    `;
+    export function GetStudentById(id:number):Student {
+        let ret=errorStudent;
+        client.query({
+            query:GetStudentByIdQuerey,
+            variables:{id:id}
+        }).then((result)=>{
+            let data=result.data
+            ret=GetStudentFromGraphQLJson(data);
+        }).catch((error)=>{
+            console.log(`we dont have error handleing=${error}`);
+        })
+        return ret;
+    }
+    export function signup(username:string,password:string):Student {
+        let retUser:Student=errorStudent;
+        client.mutate({
+            mutation:studentSignUpQuery,
+            variables:{username:username,password:password}
+        }).then((studentAsJson)=>{
+            let data=studentAsJson.data;
+            console.log(data);
+            retUser=GetStudentFromGraphQLJson(data);
+
+        }).catch((error)=>{
+            console.log(`we have no error handeling:${error}`);
+            
+        });
+        return retUser;
+    }
+
+    export const errorStudent:Student={
+        id:-666,
+        Grades:[],
+        Classes:[],
+        DisplaceExceptions:[],
+    };
     
 }
