@@ -1,0 +1,16 @@
+.mini-view h3{
+    border: 3px solid black;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-style: oblique;
+    font-weight: 900;
+    padding-bottom: 0px;
+    margin-bottom: -17px;
+}
+.mini-view ul{
+    margin-left: -3em;
+    padding-top: 0px;
+    border: 2px solid black;
+}
+.mini-view{
+    background-color: rgb(56, 129, 255);
+}

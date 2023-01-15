@@ -5,6 +5,8 @@ import { Student } from "../models/student";
 import { UserService } from "./userService";
 import client from "./gqlSetup";
 import { gql } from "@apollo/client";
+import User from "../models/user";
+import Login from "../pages/login";
 export namespace StudentService{
     export function GetStudentFromGraphQLJson(jsonFromGraphQl:object)  {
         
@@ -121,8 +123,21 @@ export namespace StudentService{
         }
     }
     `;
+    const studentSignUpQueryID=
+    gql`
+    mutation createStudent($username:String!,$password:String!){
+        createStudent(input:{
+            user:{
+                username:$username
+                password:$password
+            }
+        }){
+            id
+        }
+    }
+    `;
     const GetStudentByIdQuerey=gql`
-    query getStudentById($id:Int){
+    query getStudentById($id:ID){
         getStudentById(input: {id:$id}) {
             id
             displaceException {
@@ -143,20 +158,29 @@ export namespace StudentService{
         }
     }
     `;
-    export function GetStudentById(id:number):Student {
-        let ret=errorStudent;
-        client.query({
-            query:GetStudentByIdQuerey,
-            variables:{id:id}
-        }).then((result)=>{
-            let data=result.data
-            ret=GetStudentFromGraphQLJson(data);
-        }).catch((error)=>{
-            console.log(`we dont have error handleing=${error}`);
-        })
-        return ret;
+    const GetStudentUser=gql`
+    query getStudentUser($id:Int){
+        getStudentUser(input: {id: $id}) {
+          username
+          PointsTo
+          isStudent
+          id
+        }
     }
-    export function signup(username:string,password:string):Student {
+    `;
+    export async function GetStudentById(id:number):Promise<Student> {
+        
+        try{
+            let result=await client.query({ query:GetStudentByIdQuerey,variables:{id:id}});
+            let data=result.data
+            let ret=GetStudentFromGraphQLJson(data);
+            return ret;
+        }catch(error){
+            return errorStudent;
+        }
+        
+    }
+    export async function signup(username:string,password:string):Promise<Student> {
         let retUser:Student=errorStudent;
         client.mutate({
             mutation:studentSignUpQuery,
@@ -172,7 +196,17 @@ export namespace StudentService{
         });
         return retUser;
     }
-
+    export async function signupAndReturnUser(username:string,password:string):Promise<User> {
+        let ret:User=UserService.errorUser;
+        try {
+            await client.mutate({mutation:studentSignUpQueryID,variables:{username:username,password:password}}); 
+            ret=await UserService.login(username,password);
+        } catch (error:any) {
+            console.log(`there was an error uwu:${error}`);
+            return UserService.errorUser;
+        }
+        return ret;
+    }
     export const errorStudent:Student={
         id:-666,
         Grades:[],

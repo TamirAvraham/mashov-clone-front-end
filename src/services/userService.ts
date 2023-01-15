@@ -12,25 +12,15 @@ export namespace UserService{
         }
     }
     `
-    export function login(username:string,password:string):User {//
+    
+
+    export async function login(username:string,password:string):Promise<User> {//
         let retUser:User=errorUser,retError:any;
-        client.mutate(
-            {
-                mutation:loginGraphQLQuery,
-                variables:{username:username,password:password}
-            }
-        ).then((qureyRes)=>{
-            const {data}=qureyRes;
-            let json=data["login"]
-            console.log(json);
-            retUser=ParseUserFromJson(json);
-            
-            
-        }).catch((err)=>{
-            console.log(err);
-            retError=err;
-        })
-        
+        let res=await client.mutate({mutation:loginGraphQLQuery,variables:{username:username,password:password}});
+        const {data}=res;
+        let json=data["login"]
+        console.log(json);
+        retUser=ParseUserFromJson(json);
         
         return retUser;
     }
@@ -44,6 +34,7 @@ export namespace UserService{
         }
         return ret
     }
+    
     export const errorUser:User={
         id:-666,
         username:"error",

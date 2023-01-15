@@ -1,0 +1,42 @@
+
+li{
+    display: flex;
+    border: 4px solid black;
+    size: 30px;
+    justify-self: end;
+    justify-items: center;
+    border-radius: 20em;
+    border-spacing: 14px 14px;
+    padding-left: 14px;
+    margin: 10px;
+    background-color: var(--bg-color);
+    list-style-position:inside;
+}
+li:hover{
+    background-color: var(--bg-color-on-hover);
+}
+h2{
+    justify-self: flex-end;
+    font-size: medium;
+    padding: 7px;
+}
+h1{
+    justify-self: flex-start;
+   font-size: larger;
+   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+   
+   padding: 7px;
+    
+}
+h4{
+    justify-self: flex-start;
+    font-size: smaller;
+    padding: 7px;
+    
+}
+:root{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --bg-color:rgb(165, 219, 213);
+    --bg-color-on-hover:white;
+    --font-size:20px;
+}
